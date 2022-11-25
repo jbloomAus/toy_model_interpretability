@@ -1,0 +1,3 @@
+[submodule "adam_jermyn"]
+	path = adam_jermyn
+	url = https://github.com/adamjermyn/toy_model_interpretability.git
