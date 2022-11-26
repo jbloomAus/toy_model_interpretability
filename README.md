@@ -40,13 +40,15 @@ To that end, I'd like this project to demonstrate how high quality code/ops prac
 
 ## What am I currently doing? 
 
-This figure is from the Engineering Monosemanticity paper from which I drew the initial scripts. 
-I'd like to reproduce their results/figures. To show these nicely, I've got a streamlit app:
+
+I'd like to reproduce the results/figures of the Engineering Monosemanticity post. To show these nicely, I've got a streamlit app:
 
 ![streamlit_screenshot](resources/streamlit_app_screenshot.png)
 
 
 I'm currently running a very simple script that takes advantage of the refactoring I've done to run all of the experiments easily.
+
+The sweeps I'd like to do:
 
 Table 1: Training parameters and model architectures.
 
