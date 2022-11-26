@@ -17,3 +17,16 @@ class ToyModelConfig:
     init_bias: float # initial bias
     nonlinearity: str # activation function
     reg: float # regularization parameter
+
+def copy_config_update_var(config, var, value):
+    params = [i for i in dir(config) if not i.startswith('_')]
+    config_dict = {i: config.__getattribute__(i) for i in params}
+    config_dict[var] = value
+    new_config = ToyModelConfig(**config_dict)
+    return new_config
+
+def create_sweep_configs(config, sweep_var, sweep_values):
+    configs = []
+    for sweep_value in sweep_values:
+        configs.append(copy_config_update_var(config, sweep_var, sweep_value))
+    return configs
