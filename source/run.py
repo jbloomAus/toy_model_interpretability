@@ -66,7 +66,8 @@ def monosemanticity_runner(
         'sweep_var': sweep_var,
         'sweep_values': sweep_values
     }
-
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     torch.save(sweep_results, os.path.join(output_dir, file_name) + '.pt')
 
 
