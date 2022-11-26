@@ -38,12 +38,15 @@ I'm currently doing [ARENA](https://www.arena.education/) after which I'll be lo
 
 To that end, I'd like this project to demonstrate how high quality code/ops practices accelerate research (as I think they might be undervalued currently). I do not think it is clear that this is a "high quality" alignment agenda, only that I find it accessible, and have various ideas I would like to test while building intuitions about neural networks.
 
-
-
 ## What am I currently doing? 
 
 This figure is from the Engineering Monosemanticity paper from which I drew the initial scripts. 
-I'd like to reproduce their results/figures.
+I'd like to reproduce their results/figures. To show these nicely, I've got a streamlit app:
+
+![streamlit_screenshot](resources/streamlit_app_screenshot.png)
+
+
+I'm currently running a very simple script that takes advantage of the refactoring I've done to run all of the experiments easily.
 
 Table 1: Training parameters and model architectures.
 
