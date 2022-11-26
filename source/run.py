@@ -6,39 +6,39 @@ from utils import get_activation_from_string, get_sampling_function_from_string,
 from models import get_model
 from sampling import sample_vectors_equal, sample_vectors_power_law, make_random_embedder
 
-def train_model(N,m,k,eps,batch_size,learning_rate,training_steps,sample_kind,init_bias,nonlinearity,task,decay,reg, device = 'cpu'):
+def train_model(config, device='cpu'):
     
-    # parse arguments
-    sampler = get_sampling_function_from_string(sample_kind)
-    activation = get_activation_from_string(nonlinearity)
-    output_embedder = get_output_embedder(task, N, m)
-    output_dim = get_output_dim(task, N, m)
+    # parse arguments (replace this with an input parser)
+    sampler = get_sampling_function_from_string(config.sample_kind)
+    activation = get_activation_from_string(config.nonlinearity)
+    output_embedder = get_output_embedder(config.task, config.N, config.m)
+    output_dim = get_output_dim(config.task, config.N, config.m)
 
     # store config
     setup = {
-        'N':N,
-        'm':m,
-        'k':k,
-        'batch_size':batch_size,
-        'learning_rate':learning_rate,
-        'eps':eps,
-        'fixed_embedder': make_random_embedder(N,m), # I need to think about this
+        'N':config.N,
+        'm':config.m,
+        'k':config.k,
+        'batch_size':config.batch_size,
+        'learning_rate':config.learning_rate,
+        'eps':config.eps,
+        'fixed_embedder': make_random_embedder(config.N,config.m), # I need to think about this
         'sampler':sampler,
-        'task': task,
-        'decay': decay,
-        'reg': reg,
+        'task': config.task,
+        'decay': config.decay,
+        'reg': config.reg,
         'output_embedder': output_embedder,
         'output_dim': output_dim,
         'activation': activation,
-        'init_bias': init_bias
+        'init_bias': config.init_bias
     }
 
     # get model, set bias
-    model = get_model(m, k, output_dim, activation, device)
-    model = set_bias_mean(model, init_bias)
+    model = get_model(config.m, config.k, output_dim, activation, device)
+    model = set_bias_mean(model, config.init_bias)
 
     # train model
-    losses, model, models = train(setup, model, training_steps)
+    losses, model, models = train(setup, model, config.training_steps)
 
     return losses, model, models, setup
 
