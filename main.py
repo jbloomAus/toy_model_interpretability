@@ -4,7 +4,6 @@ from source.run import run
 
 def main():
     parser = argparse.ArgumentParser()
-    parser = argparse.ArgumentParser()
     parser.add_argument("--k", type=int)
     parser.add_argument("--log2_batch_size", type=int)
     parser.add_argument("--log2_training_steps", type=int)
