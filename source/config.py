@@ -14,7 +14,7 @@ class ToyModelConfig:
     sample_kind: str # sample_vectors_equal,
     task: str # the corresponding samplers from autoencoder, random proj, abs
     decay: float # decay rate for bias parameter
-    init_bias: float # initial bias
+    initial_bias: float # initial bias
     nonlinearity: str # activation function
     reg: float # regularization parameter
     device: str # the device we originally trained on

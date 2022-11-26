@@ -105,3 +105,22 @@ with col2:
     if st.checkbox("Show single feature activations", key = "sdgasgas"):
         fig = sfa_plot(l3_outputs["outputs"], l3_outputs["sweep_var"], js = [0,2,5])
         st.pyplot(fig)
+
+
+col1, col2, col3 = st.columns([0.1,1,0.1])
+
+with col2:
+    st.subheader("B1: ")
+    st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=0.003, Decay Rate=0, Bias Offset=**Variable**, L1 Reg.=0")
+
+col1, col2, col3, col4 = st.columns([0.1,0.5,0.5,0.1])
+
+with col2:
+    b1_outputs = torch.load('hubinger_2022_data/b1.pt')
+
+    fig = training_plot(b1_outputs["outputs"], 'initial_bias', 'loss')
+    st.pyplot(fig)
+
+    if st.checkbox("Show single feature activations", key = "sdsgas"):
+        fig = sfa_plot(b1_outputs["outputs"], 'initial_bias', js = [0,2,5])
+        st.pyplot(fig)

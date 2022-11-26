@@ -29,7 +29,7 @@ monosemanticity_runner(
 # [0.001,0.003,0.005,0.007,0.01,0.03]
 monosemanticity_runner(
     decay=0.003,
-    init_bias=-1,
+    initial_bias=-1,
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',
     output_dir='hubinger_2022_data',
@@ -44,7 +44,7 @@ monosemanticity_runner(
     eps = 2**-4,
     decay=0.03,
     sweep_values= bias,
-    sweep_var='init_bias',
+    sweep_var='initial_bias',
     output_dir='hubinger_2022_data',
     file_name='b1',
     device = device
@@ -55,7 +55,7 @@ monosemanticity_runner(
     eps = 2**-5,
     decay=0.03,
     sweep_values= bias,
-    sweep_var='init_bias',
+    sweep_var='initial_bias',
     output_dir='hubinger_2022_data',
     file_name='b2',
     device = device
@@ -66,7 +66,7 @@ monosemanticity_runner(
     eps = 2**-6,
     decay=0.03,
     sweep_values= bias,
-    sweep_var='init_bias',
+    sweep_var='initial_bias',
     output_dir='hubinger_2022_data',
     file_name='b3'
 )
@@ -75,7 +75,7 @@ monosemanticity_runner(
     eps = 2**-7,
     decay=0.03,
     sweep_values= bias,
-    sweep_var='init_bias',
+    sweep_var='initial_bias',
     output_dir='hubinger_2022_data',
     file_name='b4',
     device = device
@@ -85,7 +85,7 @@ monosemanticity_runner(
     eps = 2**-8,
     decay=0.03,
     sweep_values= bias,
-    sweep_var='init_bias',
+    sweep_var='initial_bias',
     output_dir='hubinger_2022_data',
     file_name='b5',
     device = device
@@ -94,7 +94,7 @@ monosemanticity_runner(
 # [0.001,0.003,0.005,0.007,0.01,0.03]
 monosemanticity_runner(
     decay=0.03,
-    init_bias=-1,
+    initial_bias=-1,
     sample_kind="power_law",
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',

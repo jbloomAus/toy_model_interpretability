@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--sample_kind", type=str, default = 'equal')
     parser.add_argument("--task", type=str, default = 'autoencoder')
     parser.add_argument("--decay", type=float, default = 0.0)
-    parser.add_argument("--init_bias", type=float, default = 0.0)
+    parser.add_argument("--initial_bias", type=float, default = 0.0)
     parser.add_argument("--nonlinearity", type=str, default = 'ReLU')
     parser.add_argument("--reg", type=float, default=0.0)
     parser.add_argument("--output_dir", type=str, default='./')
@@ -34,7 +34,7 @@ def main():
         sample_kind = args.sample_kind,
         task = args.task,
         decay = args.decay,
-        init_bias = args.init_bias,
+        initial_bias = args.initial_bias,
         nonlinearity = args.nonlinearity,
         reg = args.reg,
         output_dir = args.output_dir,

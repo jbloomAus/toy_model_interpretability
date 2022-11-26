@@ -34,7 +34,7 @@ def monosemanticity_runner(
         sample_kind = 'equal',
         task = 'autoencoder',
         decay = 0.0,
-        init_bias = 0.0,
+        initial_bias = 0.0,
         nonlinearity = 'ReLU',
         reg = 0.0,
         output_dir = './',
@@ -58,7 +58,7 @@ def monosemanticity_runner(
         sample_kind = sample_kind,
         task = task,
         decay = decay,
-        init_bias = init_bias,
+        initial_bias = initial_bias,
         nonlinearity = nonlinearity,
         reg = reg,
         device = device
@@ -88,7 +88,6 @@ def monosemanticity_runner(
         os.makedirs(output_dir)
     torch.save(sweep_results, os.path.join(output_dir, file_name) + '.pt')
 
-
 def train_model(config, device='cpu'):
     
     # parse arguments (replace this with an input parser)
@@ -113,12 +112,12 @@ def train_model(config, device='cpu'):
         'output_embedder': output_embedder,
         'output_dim': output_dim,
         'activation': activation,
-        'init_bias': config.init_bias
+        'initial_bias': config.initial_bias
     }
 
     # get model, set bias
     model = get_model(config.m, config.k, output_dim, activation, device)
-    model = set_bias_mean(model, config.init_bias)
+    model = set_bias_mean(model, config.initial_bias)
 
     # train model
     losses, model, models = train(setup, model, config.training_steps, device = device)
@@ -133,7 +132,7 @@ def set_bias_mean(model, mean):
 
 # legacy (for reference)
 def save_model(input_config, losses, model, models, setup, output_dir = './'):
-    fname = f"model3_{input_config.task}_{input_config.nonlinearity}_k_{input_config.k}_batch_{np.log2(input_config.batch_size)}_steps_{np.log2(input_config.training_steps)}_learning_rate_{input_config.learning_rate}_sample_{input_config.sample_kind}_init_bias_{input_config.init_bias}_decay_{input_config.decay}_eps_{input_config.eps}_m_{input_config.m}_N_{input_config.N}_reg_{input_config.reg}.pt"
+    fname = f"model3_{input_config.task}_{input_config.nonlinearity}_k_{input_config.k}_batch_{np.log2(input_config.batch_size)}_steps_{np.log2(input_config.training_steps)}_learning_rate_{input_config.learning_rate}_sample_{input_config.sample_kind}_initial_bias_{input_config.initial_bias}_decay_{input_config.decay}_eps_{input_config.eps}_m_{input_config.m}_N_{input_config.N}_reg_{input_config.reg}.pt"
     fname = os.path.join(output_dir, fname)
     outputs = repack_model_outputs(input_config, losses, model, models, setup)
     torch.save(outputs, fname)
@@ -151,7 +150,7 @@ def repack_model_outputs(input_config, losses, model, models, setup):
         'reg': input_config.reg,
         'decay': input_config.decay,
         'nonlinearity': input_config.nonlinearity,
-        'initial_bias': input_config.init_bias,
+        'initial_bias': input_config.initial_bias,
         'log2_training_steps': np.log2(input_config.training_steps),
         'sample_kind': input_config.sample_kind,
         'losses': losses,
