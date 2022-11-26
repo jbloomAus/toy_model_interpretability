@@ -27,6 +27,9 @@ def monosemanticity_runner(
         file_name = None,
         device = 'cpu'
     ):
+    assert sample_kind in ['equal', 'power_law']
+    assert task in ['abs', 'autoencoder', 'random_proj']
+    assert nonlinearity in ['ReLU', 'GeLU', 'SoLU']
 
     base_config = ToyModelConfig( 
         N = N,
