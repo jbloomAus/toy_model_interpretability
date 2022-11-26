@@ -30,7 +30,7 @@ def monosemanticity_runner(
         eps = 1/64.0,
         log2_batch_size = 7,
         learning_rate = 0.03,
-        log2_training_steps = 12,
+        log2_training_steps = 15,
         sample_kind = 'equal',
         task = 'autoencoder',
         decay = 0.0,
