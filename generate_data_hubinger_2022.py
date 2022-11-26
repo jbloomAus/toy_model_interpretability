@@ -1,6 +1,7 @@
 from source.run import monosemanticity_runner
 import numpy as np
 
+device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 # LR1
 # for lr in [0.001,0.003,0.005,0.007,0.01,0.03]
@@ -8,7 +9,8 @@ monosemanticity_runner(
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',
     output_dir='hubinger_2022_data',
-    file_name='lr1'
+    file_name='lr1',
+    device = device
 )
 
 # LR2 (power law)
@@ -18,8 +20,10 @@ monosemanticity_runner(
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',
     output_dir='hubinger_2022_data',
-    file_name='lr2'
+    file_name='lr2',
+    device = device
 )
+
 # LR3 (negative bias and decay)
 # [0.001,0.003,0.005,0.007,0.01,0.03]
 monosemanticity_runner(
@@ -28,7 +32,8 @@ monosemanticity_runner(
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',
     output_dir='hubinger_2022_data',
-    file_name='lr3'
+    file_name='lr3',
+    device = device
 )
 
 # B1
@@ -40,7 +45,8 @@ monosemanticity_runner(
     sweep_values= bias,
     sweep_var='init_bias',
     output_dir='hubinger_2022_data',
-    file_name='b1'
+    file_name='b1',
+    device = device
 )
 
 # B2
@@ -50,7 +56,8 @@ monosemanticity_runner(
     sweep_values= bias,
     sweep_var='init_bias',
     output_dir='hubinger_2022_data',
-    file_name='b2'
+    file_name='b2',
+    device = device
 )
 
 # B3
@@ -69,7 +76,8 @@ monosemanticity_runner(
     sweep_values= bias,
     sweep_var='init_bias',
     output_dir='hubinger_2022_data',
-    file_name='b4'
+    file_name='b4',
+    device = device
 )
 # B5 
 monosemanticity_runner(
@@ -78,9 +86,9 @@ monosemanticity_runner(
     sweep_values= bias,
     sweep_var='init_bias',
     output_dir='hubinger_2022_data',
-    file_name='b5'
+    file_name='b5',
+    device = device
 )
-
 # LR4 (negative bias and decay and power law)
 # [0.001,0.003,0.005,0.007,0.01,0.03]
 monosemanticity_runner(
@@ -90,7 +98,8 @@ monosemanticity_runner(
     sweep_values= [0.001,0.003,0.005,0.007,0.01,0.03],
     sweep_var='learning_rate',
     output_dir='hubinger_2022_data',
-    file_name='lr4'
+    file_name='lr4',
+    device = device
 )
 
 # # B32 # not sure how to deal with this one yet...
