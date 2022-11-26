@@ -4,7 +4,7 @@ from copy import deepcopy
 from .loss import loss_func, abs_loss_func
 import tqdm
 
-def train(setup, model, training_steps):
+def train(setup, model, training_steps, device: str = 'cpu'):
     N = setup['N'] if isinstance(setup['N'], torch.Tensor) else torch.tensor(setup['N'])
     eps = setup['eps'] if isinstance(setup['eps'], torch.Tensor) else torch.tensor(setup['eps'])
     learning_rate = setup['learning_rate'] if isinstance(setup['learning_rate'], torch.Tensor) else torch.tensor(setup['learning_rate'])
@@ -47,6 +47,8 @@ def train(setup, model, training_steps):
         optimizer.zero_grad(set_to_none=True)
 
         vectors, inputs = sample_vectors(N, eps, batch_size, fixed_embedder)
+        vectors.to(device)
+        inputs.to(device)
         outputs = model.forward(inputs)
         activations = model[:2].forward(inputs)
         l = l_func(batch_size, outputs, vectors)      

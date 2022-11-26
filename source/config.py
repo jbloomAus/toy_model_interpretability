@@ -17,6 +17,7 @@ class ToyModelConfig:
     init_bias: float # initial bias
     nonlinearity: str # activation function
     reg: float # regularization parameter
+    device: str # the device we originally trained on
 
 def copy_config_update_var(config, var, value):
     params = [i for i in dir(config) if not i.startswith('_')]

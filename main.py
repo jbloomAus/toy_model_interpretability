@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--sweep_var", type=str)
     parser.add_argument("--sweep_values", type=float, default=None, nargs='+')
     parser.add_argument("--file_name", type=str, default=None)
+    parser.add_argument("--device", type=str, default='cpu')
     args = parser.parse_args()
 
     monosemanticity_runner(
@@ -42,7 +43,8 @@ def main():
         output_dir = args.output_dir,
         sweep_var = args.sweep_var,
         sweep_values = args.sweep_values,
-        file_name = args.file_name
+        file_name = args.file_name,
+        device=args.device
     )
 
 

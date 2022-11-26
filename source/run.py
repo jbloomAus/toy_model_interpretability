@@ -25,6 +25,7 @@ def monosemanticity_runner(
         sweep_var = None,
         sweep_values = None,
         file_name = None,
+        device = 'cpu'
     ):
 
     base_config = ToyModelConfig( 
@@ -40,7 +41,8 @@ def monosemanticity_runner(
         decay = decay,
         init_bias = init_bias,
         nonlinearity = nonlinearity,
-        reg = reg
+        reg = reg,
+        device = device
     )
 
     if sweep_var is not None:
@@ -49,7 +51,7 @@ def monosemanticity_runner(
     else:
         configs = [base_config]
 
-    outputs = [train_model(config) for config in configs]
+    outputs = [train_model(config, config.device) for config in configs]
     repacked_outputs = [repack_model_outputs(config, output[0], output[1], output[2], output[3]) for config, output in zip(configs, outputs)]
     
     # delete output['setup']['sampler'] for output in repacked_outputs (as it can't be pickled)
@@ -97,7 +99,7 @@ def train_model(config, device='cpu'):
     model = set_bias_mean(model, config.init_bias)
 
     # train model
-    losses, model, models = train(setup, model, config.training_steps)
+    losses, model, models = train(setup, model, config.training_steps, device = device)
 
     return losses, model, models, setup
 
