@@ -1,5 +1,6 @@
 import torch
 import argparse
+import os
 from source.run import train_model
 from source.config import ToyModelConfig
 
@@ -20,20 +21,6 @@ def main():
     parser.add_argument("--reg", type=float)
 
     args = parser.parse_args()
-
-    k = args.k
-    learning_rate = args.learning_rate
-    log2_batch_size = args.log2_batch_size
-    log2_training_steps = args.log2_training_steps
-    sample_kind = args.sample_kind
-    init_bias = args.init_bias
-    nonlinearity = args.nonlinearity
-    task = args.task
-    decay = args.decay
-    eps = args.eps
-    m = args.m
-    N = args.N
-    reg = args.reg
 
     config = ToyModelConfig(
         N=args.N,
@@ -57,27 +44,33 @@ def main():
 
     del setup['sampler']
 
-    fname = f"./model3_{task}_{nonlinearity}_k_{k}_batch_{log2_batch_size}_steps_{log2_training_steps}_learning_rate_{learning_rate}_sample_{sample_kind}_init_bias_{init_bias}_decay_{decay}_eps_{eps}_m_{m}_N_{N}_reg_{reg}.pt"
+    save_model(config, losses, model, models, setup)
+
+def save_model(input_config, losses, model, models, setup, output_dir = './'):
+    fname = f"model3_{input_config.task}_{input_config.nonlinearity}_k_{input_config.k}_batch_{input_config.log2_batch_size}_steps_{input_config.log2_training_steps}_learning_rate_{input_config.learning_rate}_sample_{input_config.sample_kind}_init_bias_{input_config.init_bias}_decay_{input_config.decay}_eps_{input_config.eps}_m_{input_config.m}_N_{input_config.N}_reg_{input_config.reg}.pt"
+    fname = os.path.join(output_dir, fname)
     outputs = {
         'setup': setup,
-        'N': N,
-        'm': m,
-        'k':k,
-        'log2_batch_size': log2_batch_size,
-        'learning_rate': learning_rate,
-        'eps': eps,
-        'task': task,
-        'reg': reg,
-        'decay': decay,
-        'nonlinearity': nonlinearity,
-        'initial_bias': init_bias,
-        'log2_training_steps': log2_training_steps,
-        'sample_kind': sample_kind,
+        'N': input_config.N,
+        'm': input_config.m,
+        'k':input_config.k,
+        'log2_batch_size': input_config.log2_batch_size,
+        'learning_rate': input_config.learning_rate,
+        'eps': input_config.eps,
+        'task': input_config.task,
+        'reg': input_config.reg,
+        'decay': input_config.decay,
+        'nonlinearity': input_config.nonlinearity,
+        'initial_bias': input_config.init_bias,
+        'log2_training_steps': input_config.log2_training_steps,
+        'sample_kind': input_config.sample_kind,
         'losses': losses,
         'final_model': model.state_dict(),
         'log2_spaced_models': list(m.state_dict() for m in models),
     }
+
     torch.save(outputs, fname)
 
+    
 if __name__ == "__main__":
     main()
