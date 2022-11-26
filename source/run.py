@@ -7,6 +7,22 @@ from .models import get_model
 from .sampling import make_random_embedder
 from .config import ToyModelConfig, create_sweep_configs
 
+import logging
+from asyncio.log import logger
+import sys
+
+# get debug level from environment variable
+debug_level = os.environ.get('DEBUG_LEVEL', 'WARN')
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s:%(name)s: %(message)s",
+    level=debug_level,
+    datefmt="%H:%M:%S",
+    stream=sys.stdout,
+)
+
+logger = logging.getLogger("run")
+
 def monosemanticity_runner(
         N = 512,
         m = 64,
