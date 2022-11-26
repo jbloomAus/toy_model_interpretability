@@ -1,10 +1,9 @@
 import torch
 import torch.nn as nn
-from train import train
-
-from utils import get_activation_from_string, get_sampling_function_from_string, get_output_embedder, get_output_dim
-from models import get_model
-from sampling import sample_vectors_equal, sample_vectors_power_law, make_random_embedder
+from .train import train
+from .utils import get_activation_from_string, get_sampling_function_from_string, get_output_embedder, get_output_dim
+from .models import get_model
+from .sampling import sample_vectors_equal, sample_vectors_power_law, make_random_embedder
 
 def train_model(config, device='cpu'):
     

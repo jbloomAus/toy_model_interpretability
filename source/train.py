@@ -1,7 +1,8 @@
 import torch
-import torch.optim as optim
+import torch_optimizer as optim
 from copy import deepcopy
-from loss import loss_func, abs_loss_func
+from .loss import loss_func, abs_loss_func
+import tqdm
 
 def train(setup, model, training_steps):
     N = setup['N'] if isinstance(setup['N'], torch.Tensor) else torch.tensor(setup['N'])
@@ -41,7 +42,8 @@ def train(setup, model, training_steps):
     models = []
 
     # Training loop
-    for i in range(training_steps):
+    pbar = tqdm.tqdm(range(training_steps))
+    for i in pbar:
         optimizer.zero_grad(set_to_none=True)
 
         vectors, inputs = sample_vectors(N, eps, batch_size, fixed_embedder)
@@ -54,6 +56,8 @@ def train(setup, model, training_steps):
 
         optimizer.step()
         scheduler.step()
+
+        pbar.set_description(f'Loss: {loss.item():.4f}')
 
         if i < training_steps / 2:
             state = model.state_dict()
