@@ -64,6 +64,8 @@ def monosemanticity_runner(
         device = device
     )
 
+    logger.info(f"Running with config: {base_config}")
+    
     if sweep_var is not None:
         assert sweep_values is not None
         configs = create_sweep_configs(base_config, sweep_var, sweep_values)
