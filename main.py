@@ -1,7 +1,4 @@
-import torch
 import argparse
-import os
-import numpy as np
 from source.run import monosemanticity_runner
 
 def main():
