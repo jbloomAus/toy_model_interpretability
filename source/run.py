@@ -4,7 +4,7 @@ from train import train
 from activations import SoLU
 from sampling import sample_vectors_equal, sample_vectors_power_law, make_random_embedder
 
-def run(N,m,k,eps,batch_size,learning_rate,training_steps,sample_kind,init_bias,nonlinearity,task,decay,reg, device = 'cpu'):
+def train_model(N,m,k,eps,batch_size,learning_rate,training_steps,sample_kind,init_bias,nonlinearity,task,decay,reg, device = 'cpu'):
     if sample_kind == 'equal':
         sampler = sample_vectors_equal
     elif sample_kind == 'power_law':
@@ -20,7 +20,7 @@ def run(N,m,k,eps,batch_size,learning_rate,training_steps,sample_kind,init_bias,
         'batch_size':batch_size,
         'learning_rate':learning_rate,
         'eps':eps,
-        'fixed_embedder':make_random_embedder(N,m),
+        'fixed_embedder': make_random_embedder(N,m),
         'sampler':sampler,
         'task': task,
         'decay': decay,

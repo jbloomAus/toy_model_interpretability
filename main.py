@@ -1,6 +1,6 @@
 import torch
 import argparse
-from source.run import run
+from source.run import train_model
 
 def main():
     parser = argparse.ArgumentParser()
@@ -34,7 +34,7 @@ def main():
     N = args.N
     reg = args.reg
 
-    data = run(N,
+    data = train_model(N,
             m,
             args.k,
             eps,
