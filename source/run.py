@@ -11,7 +11,7 @@ def monosemanticity_runner(
         N = 512,
         m = 64,
         k = 1024,
-        eps = 0.015625,
+        eps = 1/64.0,
         log2_batch_size = 7,
         learning_rate = 0.03,
         log2_training_steps = 12,
