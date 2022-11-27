@@ -3,7 +3,7 @@ import os
 import numpy as np
 from .train import train
 from .utils import get_activation_from_string, get_sampling_function_from_string, get_output_embedder, get_output_dim
-from .models import get_model
+from .models import get_model, set_bias_mean
 from .sampling import make_random_embedder
 from .config import ToyModelConfig, create_sweep_configs
 
@@ -123,12 +123,6 @@ def train_model(config, device='cpu'):
     losses, model, models = train(setup, model, config.training_steps, device = device)
 
     return losses, model, models, setup
-
-def set_bias_mean(model, mean):
-    state = model.state_dict()
-    state['0.bias'] += mean
-    model.load_state_dict(state)
-    return model
 
 # legacy (for reference)
 def save_model(input_config, losses, model, models, setup, output_dir = './'):
