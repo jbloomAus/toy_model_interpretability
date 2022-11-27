@@ -37,7 +37,16 @@ def test_sample_vectors_equal():
 
 def test_make_random_embedder():
     N = torch.tensor(100)
-    m = torch.tensor(2)
+    m = torch.tensor(50)
     embedder = make_random_embedder(N, m)
     assert embedder.shape == (m, N)
     assert torch.allclose(torch.sum(embedder**2, dim=0).T, torch.ones(N))
+
+    
+    orthogonal_rows_matrix = (embedder @ embedder.T) /  (embedder @ embedder.T).max()
+    #px.imshow(orthogonal_rows_matrix).show() # how to visualize
+    torch.testing.assert_close(orthogonal_rows_matrix, torch.eye(m), rtol=0, atol=0.1)
+
+    orthogonal_cols_matrix = (embedder.T @ embedder) /  (embedder.T @ embedder).max()
+    #px.imshow(orthogonal_cols_matrix).show() # how to visualize
+    torch.testing.assert_close(orthogonal_cols_matrix, torch.eye(N), rtol=0, atol=0.5)
