@@ -40,6 +40,16 @@ You can then visualize the results using Adam's plot helper module. (I think thi
 subset of the original paper's figures but I'll work on reproducing everything worthwhile eventually.)
 
 
+Run the tests with:
+```bash
+pytest -v --cov=source/ --cov-report=term-missing tests 
+```
+or run with the script:
+
+```bash
+./scripts/run_tests.sh
+```
+
 
 ## FAQ
 ### Why mechanistic interpretability? 
