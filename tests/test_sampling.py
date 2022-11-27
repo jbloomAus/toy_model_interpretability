@@ -84,3 +84,43 @@ def test_get_random_sampler():
 
     # check embedding is accurate
     torch.testing.assert_close(x, v) # since we can't take inverses of rectangular matrices, we can cheat by making the embeddings equal
+
+def test_task_sampler_generator_autoencoder():
+    N = torch.tensor(2**12)
+    eps = torch.tensor(0.1)
+    batch_size = torch.tensor(2**5)
+    embedder = make_random_embedder(N, 2)
+    sample_vectors, l_func = task_sampler_generator("autoencoder", sample_vectors_equal)
+    v, x = sample_vectors(N, eps, batch_size, embedder)
+    assert v.shape == (batch_size, N)
+    assert x.shape == (batch_size, 2)
+
+def test_task_sampler_generator_random_proj():
+    N = torch.tensor(2**12)
+    eps = torch.tensor(0.1)
+    batch_size = torch.tensor(2**5)
+    embedder = make_random_embedder(N, 2)
+    sample_vectors, l_func = task_sampler_generator("random_proj", sample_vectors_equal, embedder)
+    v, x = sample_vectors(N, eps, batch_size, embedder)
+    assert v.shape == (batch_size, 2)
+    assert x.shape == (batch_size, 2)
+
+def test_task_sampler_generator_random_proj_no_embedder():
+    with pytest.raises(ValueError):
+        sample_vectors, l_func = task_sampler_generator("random_proj", sample_vectors_equal)
+
+def test_task_sampler_generator_abs():
+    N = torch.tensor(2**12)
+    eps = torch.tensor(0.1)
+    batch_size = torch.tensor(2**5)
+    embedder = make_random_embedder(N, 2)
+    sample_vectors, l_func = task_sampler_generator("abs", sample_vectors_equal)
+    v, x = sample_vectors(N, eps, batch_size, embedder)
+    assert v.shape == (batch_size, N)
+    assert x.shape == (batch_size, 2)
+
+
+def test_task_sampler_generator_unkown_task():
+    with pytest.raises(ValueError):
+        sample_vectors, l_func = task_sampler_generator("unknown_task", sample_vectors_equal)
+

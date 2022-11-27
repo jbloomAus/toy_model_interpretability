@@ -56,7 +56,7 @@ def make_random_embedder(N,m, device = 'cpu'):
     return t
 
 
-def task_sampler_generator(task: str, base_sampler: Callable, output_embedder: torch.Tensor):
+def task_sampler_generator(task: str, base_sampler: Callable, output_embedder: torch.Tensor = None):
     '''
     Returns a function that generates a sampler for a given task.
     Also returns the loss function for the task.
@@ -66,6 +66,8 @@ def task_sampler_generator(task: str, base_sampler: Callable, output_embedder: t
         l_func = loss_func
         sample_vectors = base_sampler
     elif task == 'random_proj':
+        if output_embedder is None:
+            raise ValueError('No output embedder specified for random projection task.')
         l_func = loss_func
         sample_vectors = get_random_sampler(base_sampler, output_embedder)
     elif task == 'abs':
@@ -74,8 +76,7 @@ def task_sampler_generator(task: str, base_sampler: Callable, output_embedder: t
         # Different samples have different sparse choices so doubles the density.
         sample_vectors = get_abs_sampler(base_sampler)
     else:
-        print('Task not recognized. Exiting.')
-        exit()
+        raise ValueError('No valid task specified. Quitting.')
 
     return sample_vectors, l_func
 
