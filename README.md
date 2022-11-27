@@ -40,7 +40,7 @@ You can then visualize the results using Adam's plot helper module. (I think thi
 subset of the original paper's figures but I'll work on reproducing everything worthwhile eventually.)
 
 
-Run the tests with:
+Run the tests with: (please note that coverage map misses 'jit' scripts. This is solvable but I haven't solved it yet.)
 ```bash
 pytest -v --cov=source/ --cov-report=term-missing tests 
 ```
