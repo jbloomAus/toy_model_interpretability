@@ -9,7 +9,7 @@ python3 -m main \
     --sample_kind equal \
     --task autoencoder \
     --decay 0 \
-    --init_bias 0 \
+    --initial_bias 0 \
     --nonlinearity ReLU \
     --reg 0 \
     --sweep_var learning_rate \

@@ -2,7 +2,47 @@
 
 This repo is mostly based on the work of Adam, Evan and Nicholas in their [paper](https://arxiv.org/abs/2211.09169). This repo has their work as a submodule which I've decided to use as a starting point for my own investigations. For personal taste, I'm going to restructure their code into a package. 
 
-## Why mechanistic interpretability? 
+# Set Up
+
+Install the enviroment via conda:
+```bash
+conda env create --file environment.yml
+```
+
+Activate before running anything:
+```
+conda activate toy_model_interpretability
+```
+
+An example of how to run a sweep using refactored code: (note, see default values if you aren't passing in everything).
+```bash
+python3 -m main \
+    --N 256 \
+    --m 32 \
+    --k 612 \
+    --eps 0.015625 \
+    --log2_batch_size 6 \
+    --learning_rate 0.03 \
+    --log2_training_steps 13 \
+    --sample_kind equal \
+    --task autoencoder \
+    --decay 0 \
+    --initial_bias 0 \
+    --nonlinearity ReLU \
+    --reg 0 \
+    --sweep_var learning_rate \
+    --sweep_values 0.001 0.003 \
+    --file_name LR1_reduced \
+    --device cpu 
+```
+
+You can then visualize the results using Adam's plot helper module. (I think this currently covers a
+subset of the original paper's figures but I'll work on reproducing everything worthwhile eventually.)
+
+
+
+## FAQ
+### Why mechanistic interpretability? 
 
 I don't know how neural networks work! In fact, we're still very confused about how they work as a species. So let's fix that. Specifically, [work visualizing features in neural networks](https://distill.pub/2020/circuits/zoom-in/) seems to suggest that networks can represent disparate concepts in the same feature which may be a signficant impediment to our ability to easily understand what is happening under the hood. This property is called "polysemanticity" or "superposition". While it is not the only problem we face by far, it seems like a reasonable enough place to start. 
 
@@ -23,7 +63,7 @@ Related papers which I want to understand/replicate/think about more after my in
 - [Interpreting Neural Networks through the Polytope Lens](https://www.lesswrong.com/posts/eDicGjD9yte6FLSie/interpreting-neural-networks-through-the-polytope-lens)
 - [A Mechanistic Interpretability Analysis of Grokking](https://www.lesswrong.com/posts/N6WM6hs7RQMKDhYjB/a-mechanistic-interpretability-analysis-of-grokking)
 
-## What stage am I at?
+### What stage am I at?
 
 Initial investigation:
 * I'd like to explore the parameter space of Adam/co's original investigation. Choices like hyperparameters, learning rate scheduler, optimizer are things I'd like to check. 
@@ -32,14 +72,13 @@ Initial engineering:
 * I'd like to write some tests. 
 * I'd like to have cleaner interfaces/workflows for running/visualising results. 
 
-## What are my long term goals? 
+### What are my long term goals? 
 
 I'm currently doing [ARENA](https://www.arena.education/) after which I'll be looking for work as a research engineer. I'm interested in contributing to the AI Alignment problem and developing my skills in order to best support work in that research area.
 
 To that end, I'd like this project to demonstrate how high quality code/ops practices accelerate research (as I think they might be undervalued currently). I do not think it is clear that this is a "high quality" alignment agenda, only that I find it accessible, and have various ideas I would like to test while building intuitions about neural networks.
 
-## What am I currently doing? 
-
+### What am I currently doing? 
 
 I'd like to reproduce the results/figures of the Engineering Monosemanticity post. To show these nicely, I've got a streamlit app:
 
