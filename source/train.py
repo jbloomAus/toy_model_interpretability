@@ -2,6 +2,7 @@ import torch
 import torch_optimizer as optim
 from copy import deepcopy
 from .loss import loss_func, abs_loss_func
+from .sampling import task_sampler_generator
 import tqdm
 
 def train(setup, model, training_steps, device: str = 'cpu'):
@@ -14,26 +15,10 @@ def train(setup, model, training_steps, device: str = 'cpu'):
     decay = setup['decay']
     reg = setup['reg']
 
-    if task == 'autoencoder':
-        l_func = loss_func
-        sample_vectors = setup['sampler']
-    elif task == 'random_proj':
-        l_func = loss_func
-        def sample_vectors(N, eps, batch_size, fixed_embedder):
-            v,i = setup['sampler'](N, eps, batch_size, fixed_embedder)
-            v = torch.matmul(v, setup['output_embedder'].T)
-            return v,i
-    elif task == 'abs':
-        l_func = abs_loss_func
-        # I need to cut eps in half to make this equivalent density.
-        # Different samples have different sparse choices so doubles the density.
-        def sample_vectors(N, eps, batch_size, fixed_embedder):
-            v1,i1 = setup['sampler'](N, eps / 2, batch_size, fixed_embedder)
-            v2,i2 = setup['sampler'](N, eps / 2, batch_size, fixed_embedder)
-            return v1 - v2, i1 - i2
-    else:
-        print('Task not recognized. Exiting.')
-        exit()
+    sample_vectors, l_func = task_sampler_generator(
+            task, base_sampler=setup['sampler'], 
+            output_embedder= setup['output_embedder']
+    )
 
     optimizer = optim.Lamb(model.parameters(), lr=setup['learning_rate'])
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=2**9, eta_min=0)

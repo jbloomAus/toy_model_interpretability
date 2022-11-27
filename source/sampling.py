@@ -1,5 +1,8 @@
 import torch
 import numpy as np
+from .loss import loss_func, abs_loss_func
+
+from typing import Callable
 
 @torch.jit.script
 def sample_vectors_power_law(N, eps, batch_size, embedder, device: str = 'cpu'):
@@ -51,3 +54,41 @@ def make_random_embedder(N,m, device = 'cpu'):
     u /= (np.sum(u**2,axis=1)**0.5)[:,np.newaxis]
     t = torch.tensor(u.T, requires_grad=False, device=device, dtype=torch.float)
     return t
+
+
+def task_sampler_generator(task: str, base_sampler: Callable, output_embedder: torch.Tensor):
+    '''
+    Returns a function that generates a sampler for a given task.
+    Also returns the loss function for the task.
+    '''
+
+    if task == 'autoencoder':
+        l_func = loss_func
+        sample_vectors = base_sampler
+    elif task == 'random_proj':
+        l_func = loss_func
+        sample_vectors = get_random_sampler(base_sampler, output_embedder)
+    elif task == 'abs':
+        l_func = abs_loss_func
+        # I need to cut eps in half to make this equivalent density.
+        # Different samples have different sparse choices so doubles the density.
+        sample_vectors = get_abs_sampler(base_sampler)
+    else:
+        print('Task not recognized. Exiting.')
+        exit()
+
+    return sample_vectors, l_func
+
+def get_random_sampler(base_sampler, output_embedder):
+    def random_sampler(N, eps, batch_size, fixed_embedder):
+        v,i = base_sampler(N, eps, batch_size, fixed_embedder)
+        v = torch.matmul(v, output_embedder.T)
+        return v,i
+    return random_sampler
+
+def get_abs_sampler(base_sampler):
+    def abs_sampler(N, eps, batch_size, fixed_embedder):
+        v1,i1 = base_sampler(N, eps / 2, batch_size, fixed_embedder)
+        v2,i2 = base_sampler(N, eps / 2, batch_size, fixed_embedder)
+        return v1 - v2, i1 - i2
+    return abs_sampler
