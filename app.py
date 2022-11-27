@@ -68,7 +68,7 @@ if page_selection == "Learning Rate":
     col1, col2, col3, col4 = st.columns([0.1,0.5,0.5,0.1])
 
     with col2:
-        l1_outputs = torch.load('hubinger_2022_data/lr1.pt')
+        l1_outputs = torch.load('jermyn_2022_data/lr1.pt')
 
         st.subheader("LR1: A higher learning rate can increase monosemanticity and achieve low Loss (Figure 3)")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=Variable, Decay Rate=0, Bias Offset=0, L1 Reg.=0")
@@ -81,7 +81,7 @@ if page_selection == "Learning Rate":
             st.pyplot(fig)
 
     with col3:
-        l2_outputs = torch.load('hubinger_2022_data/lr2.pt')
+        l2_outputs = torch.load('jermyn_2022_data/lr2.pt')
 
         st.subheader("LR2: Same as LR1 but power-law sampling of features (Figure 6)")
         st.write("Decoder, ReLU, **Power Law**, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=Variable, Decay Rate=0, Bias Offset=0, L1 Reg.=0")
@@ -101,7 +101,7 @@ if page_selection == "Learning Rate":
         st.subheader("LR3: Setting a negative initial bias with bias decay encourages monosemanticity (Figure 7)")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=Variable, **Decay Rate=0.03, Bias Offset= -1**, L1 Reg.=0")
 
-        l3_outputs = torch.load('hubinger_2022_data/lr3.pt')
+        l3_outputs = torch.load('jermyn_2022_data/lr3.pt')
         st.write(l3_outputs["outputs"][0]["setup"])
         fig = training_plot(l3_outputs["outputs"], l3_outputs["sweep_var"], log_color=False)
         st.pyplot(fig)
@@ -115,7 +115,7 @@ if page_selection == "Learning Rate":
         st.subheader("LR4: Like LR3 but with a Power Law Distribution of Features (Figure 12)")
         st.write("Decoder, ReLU, **Power-Law**, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, **Learning Rate=0.03, Decay Rate=-1**, Bias Offset=0, L1 Reg.=0")
 
-        l4_outputs = torch.load('hubinger_2022_data/lr4.pt')
+        l4_outputs = torch.load('jermyn_2022_data/lr4.pt')
         st.write(l4_outputs["outputs"][0]["setup"])
         fig = training_plot(l4_outputs["outputs"], l4_outputs["sweep_var"], log_color=False)
         st.pyplot(fig)
@@ -131,7 +131,7 @@ if page_selection == "Initial Bias":
         st.subheader("B1: ")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/16$, Learning Rate=0.003, Decay Rate=0.03, Bias Offset=**Variable**, L1 Reg.=0")
         
-        b1_outputs = torch.load('hubinger_2022_data/b1.pt')
+        b1_outputs = torch.load('jermyn_2022_data/b1.pt')
         st.write(b1_outputs["outputs"][0]["setup"])
 
         fig = training_plot(b1_outputs["outputs"], b1_outputs["sweep_var"], log_color=False)
@@ -144,7 +144,7 @@ if page_selection == "Initial Bias":
     with col3:
         st.subheader("B2: ")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/32$, Learning Rate=0.003, Decay Rate=0.003, Bias Offset=**Variable**, L1 Reg.=0")
-        b2_outputs = torch.load('hubinger_2022_data/b2.pt')
+        b2_outputs = torch.load('jermyn_2022_data/b2.pt')
         st.write(b2_outputs["outputs"][0]["setup"])
         fig = training_plot(b2_outputs["outputs"],  b2_outputs["sweep_var"], log_color=False)
         st.pyplot(fig)
@@ -157,7 +157,7 @@ if page_selection == "Initial Bias":
         st.subheader("B3: ")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=0.003, Decay Rate=0.003, Bias Offset=**Variable**, L1 Reg.=0")
 
-        b3_outputs = torch.load('hubinger_2022_data/b3.pt')
+        b3_outputs = torch.load('jermyn_2022_data/b3.pt')
         st.write(b3_outputs["outputs"][0]["setup"])
         fig = training_plot(b3_outputs["outputs"], b3_outputs['sweep_var'], log_color=False)
         st.pyplot(fig)
@@ -170,7 +170,7 @@ if page_selection == "Initial Bias":
         st.subheader("B4: ")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/128$, Learning Rate=0.003, Decay Rate=0.003, Bias Offset=**Variable**, L1 Reg.=0")
         
-        b4_outputs = torch.load('hubinger_2022_data/b4.pt')
+        b4_outputs = torch.load('jermyn_2022_data/b4.pt')
         st.write(b4_outputs["outputs"][0]["setup"])
         fig = training_plot(b4_outputs["outputs"], b4_outputs['sweep_var'], log_color=False)
         st.pyplot(fig)
@@ -183,7 +183,7 @@ if page_selection == "Initial Bias":
         st.subheader("B5: ")
         st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/256$, Learning Rate=0.003, Decay Rate=0.003, Bias Offset=**Variable**, L1 Reg.=0")
         
-        b5_outputs = torch.load('hubinger_2022_data/b5.pt')
+        b5_outputs = torch.load('jermyn_2022_data/b5.pt')
         st.write(b5_outputs["outputs"][0]["setup"])
         fig = training_plot(b5_outputs["outputs"], b5_outputs['sweep_var'], log_color=False)
         st.pyplot(fig)
@@ -198,8 +198,8 @@ if page_selection == "Gelu/Relu":
 
     with col2:
         st.subheader("B3 ReLU vs B3 GeLU")
-        g3_outputs = torch.load('hubinger_2022_data/g3.pt')
-        #b3 = torch.load('hubinger_2022_data/b3.pt')
+        g3_outputs = torch.load('jermyn_2022_data/g3.pt')
+        #b3 = torch.load('jermyn_2022_data/b3.pt')
 
         st.subheader("G3: ")
         st.write("Decoder, GeLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=0.003, Decay Rate=0.003, Bias Offset=**Variable**, L1 Reg.=0")
@@ -212,7 +212,7 @@ if page_selection == "Gelu/Relu":
 
     with col3:
 
-        g3_outputs = torch.load('hubinger_2022_data/g3.pt')
+        g3_outputs = torch.load('jermyn_2022_data/g3.pt')
         st.write(g3_outputs["outputs"][0]["setup"])
         fig = training_plot(g3_outputs["outputs"], g3_outputs['sweep_var'], log_color=False)
         st.pyplot(fig)
@@ -229,7 +229,7 @@ if page_selection == "Gelu/Relu":
 
     col1, col2, col3, col4 = st.columns([0.1,0.5, 0.5,0.1])
     with col2:
-        b3_outputs = torch.load('hubinger_2022_data/b3.pt')
+        b3_outputs = torch.load('jermyn_2022_data/b3.pt')
         fig = plot_mono_sweep(b3_outputs["outputs"], b3_outputs['sweep_var'])
         st.pyplot(fig)
     
