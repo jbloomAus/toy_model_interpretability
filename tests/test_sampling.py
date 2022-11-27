@@ -3,6 +3,7 @@
 import torch 
 import pytest
 from source.sampling import sample_vectors_power_law, sample_vectors_equal, make_random_embedder
+from source.sampling import task_sampler_generator, get_random_sampler, get_abs_sampler
 
 def test_sample_vectors_power_law():
     N = torch.tensor(2**12)
@@ -50,3 +51,36 @@ def test_make_random_embedder():
     orthogonal_cols_matrix = (embedder.T @ embedder) /  (embedder.T @ embedder).max()
     #px.imshow(orthogonal_cols_matrix).show() # how to visualize
     torch.testing.assert_close(orthogonal_cols_matrix, torch.eye(N), rtol=0, atol=0.5)
+
+def test_get_abs_sampler():
+    N = torch.tensor(2**12)
+    eps = torch.tensor(0.1)
+    batch_size = torch.tensor(2**12)
+    embedder = make_random_embedder(N, 2)
+    abs_sampler = get_abs_sampler(sample_vectors_equal)
+    v, x = abs_sampler(N, eps, batch_size, embedder)
+    assert v.shape == (batch_size, N)
+    assert x.shape == (batch_size, 2)
+
+    # check correct sparsity
+    torch.testing.assert_close((v == 0).to(torch.float32).mean(),1-eps, rtol=0.01, atol=0.01)
+
+    # check embedding is accurate
+    torch.testing.assert_close(x, torch.matmul(v, embedder.T))
+
+def test_get_random_sampler():
+    N = torch.tensor(2**12)
+    eps = torch.tensor(0.1)
+    batch_size = torch.tensor(2**12)
+    output_embedder = make_random_embedder(N, 2)
+    fixed_embedder = output_embedder#make_random_embedder(N, 2)
+    random_sampler = get_random_sampler(sample_vectors_equal, output_embedder)
+    v, x = random_sampler(N, eps, batch_size, fixed_embedder)
+    assert v.shape == (N, 2)
+    assert x.shape == (batch_size, 2)
+
+    # check correct sparsity
+    torch.testing.assert_close((v == 0).to(torch.float32).mean(),torch.tensor(0, dtype = torch.float32), rtol=0.01, atol=0.01)
+
+    # check embedding is accurate
+    torch.testing.assert_close(x, v) # since we can't take inverses of rectangular matrices, we can cheat by making the embeddings equal
