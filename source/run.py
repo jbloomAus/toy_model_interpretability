@@ -1,3 +1,4 @@
+import time
 import torch
 import os
 import numpy as np
@@ -22,6 +23,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("run")
+logger.setLevel(logging.INFO)
 
 def monosemanticity_runner(
         N = 512,
@@ -63,8 +65,8 @@ def monosemanticity_runner(
         reg = reg,
         device = device
     )
+    start_time = time.time()
 
-    logger.info(f"Running with config: {base_config}")
     
     if sweep_var is not None:
         assert sweep_values is not None
@@ -72,21 +74,28 @@ def monosemanticity_runner(
     else:
         configs = [base_config]
 
-    outputs = [train_model(config, config.device) for config in configs]
-    repacked_outputs = [repack_model_outputs(config, output[0], output[1], output[2], output[3]) for config, output in zip(configs, outputs)]
-    
+    outputs = []
+    for config in configs:
+        run_start_time = time.time()
+        logger.info("Running with config: {}".format(config))
+        losses, model, models, setup = train_model(config, device = device)
+        outputs.append(repack_model_outputs(config, losses, model, models, setup))
+        logger.info("Finished run in {} seconds".format(time.time() - run_start_time))
+
     # delete output['setup']['sampler'] for output in repacked_outputs (as it can't be pickled)
-    for output in repacked_outputs:
+    for output in outputs:
         del output['setup']['sampler']
 
     sweep_results = {
-        'outputs': repacked_outputs,
+        'outputs': outputs,
         'sweep_var': sweep_var,
         'sweep_values': sweep_values
     }
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     torch.save(sweep_results, os.path.join(output_dir, file_name) + '.pt')
+
+    logger.info("Finished sweep in {} seconds".format(time.time() - start_time))
 
 def train_model(config, device='cpu'):
     
