@@ -60,7 +60,7 @@ with col2:
         '''
 
         
-page_selection = option_menu(None, ["Learning Rate", "Initial Bias", "Gelu/Relu"], 
+page_selection = option_menu(None, ["Learning Rate", "Initial Bias", "Gelu/Relu","Regularization"], 
     icons=['book', 'dash', "bezier2"], 
     menu_icon="cast", default_index=0, orientation="horizontal")
 
@@ -192,7 +192,6 @@ if page_selection == "Initial Bias":
             fig = sfa_plot(b5_outputs["outputs"], b5_outputs['sweep_var'], js = [0,2,5])
             st.pyplot(fig)
 
-
 if page_selection == "Gelu/Relu":
     col1, col2, col3 = st.columns([0.1,1,0.1])
 
@@ -242,3 +241,31 @@ if page_selection == "Gelu/Relu":
             fig = sfa_plot(b3_outputs["outputs"], b3_outputs['sweep_var'], js = [0,2,5])
             st.pyplot(fig)
 
+if page_selection == "Regularization":
+
+    col1, col2, col3 = st.columns([0.1,1,0.1])
+
+    with col2:
+        st.subheader("Regularization")
+        st.write("Decoder, ReLU, Uniform, $N=512$, $m=64$, $k=1024$, $\epsilon=1/64$, Learning Rate=0.005, Decay Rate=0.03, Bias Offset=-1, L1 Reg.=**variable**")
+
+
+    col1, col2, col3,col4 = st.columns([0.1,0.5,0.5,0.1])
+
+    with col2:
+
+        rg1_outputs = torch.load('jermyn_2022_data/RG1.pt')
+
+        for i in range(len(rg1_outputs["outputs"])):
+            st.write(rg1_outputs["outputs"][i]["setup"])
+
+        fig = training_plot(rg1_outputs["outputs"], rg1_outputs["sweep_var"], log_color=True)
+        st.pyplot(fig)
+
+        # fig = plot_mono_sweep(rg1_outputs["outputs"], rg1_outputs['sweep_var'])
+        # st.pyplot(fig)
+
+    with col3:
+
+        fig = sfa_plot(rg1_outputs["outputs"], rg1_outputs['sweep_var'], js = [0,2,5])
+        st.pyplot(fig)
